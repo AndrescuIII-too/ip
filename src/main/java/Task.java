@@ -2,9 +2,9 @@ package main.java;
 
 import java.util.ArrayList;
 
-public class Task {
-    private final String description;
-    private boolean isDone = false;
+public abstract class Task {
+    protected final String description;
+    protected boolean isDone = false;
 
     public Task(String description) {
         this.description = description;
@@ -26,11 +26,14 @@ public class Task {
         return this.isDone;
     }
 
+    public abstract String getTaskIcon();
+
     public String getStatusIcon() {
         return this.isDone ? "X" : " ";
     }
 
     public String getDisplayString() {
-        return "[" + this.getStatusIcon() + "] " + this.description;
+        return "[" + this.getTaskIcon() + "]" +
+                "[" + this.getStatusIcon() + "] " + this.description;
     }
 }

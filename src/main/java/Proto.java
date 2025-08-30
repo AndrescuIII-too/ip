@@ -24,6 +24,14 @@ public class Proto {
         return sb.toString();
     }
 
+    public static void addTask(Task task) {
+        tasks.add(task);
+        System.out.println("Got it. I've added this task:\n" +
+                " " + task.getDisplayString() + "\n" +
+                "Now you have " + tasks.size() + " tasks in the list.\n" +
+                LINE_SEPARATOR);
+    }
+
     public static void main(String[] args) {
         System.out.println(LINE_SEPARATOR + "\n" +
                 "Hello! I'm Proto\n" +
@@ -33,8 +41,11 @@ public class Proto {
 
         Scanner reader = new Scanner(System.in);
 
-        Pattern mark_r = Pattern.compile("^mark (\\d+)$");
-        Pattern unmark_r = Pattern.compile("^unmark (\\d+)$");
+        Pattern rx_mark = Pattern.compile("^mark\\s+(\\d+)$");
+        Pattern rx_unmark = Pattern.compile("^unmark\\s+(\\d+)$");
+        Pattern rx_todo = Pattern.compile("^todo\\s+(.+)$");
+        Pattern rx_deadline = Pattern.compile("^deadline\\s+(.+?)\\s+/by\\s+(.+)$");
+        Pattern rx_event = Pattern.compile("^event\\s+(.+)\\s+/from\\s+(.+?)\\s+/to\\s+(.+)$");
 
         while (true) {
             System.out.print("> ");
@@ -43,33 +54,48 @@ public class Proto {
 
             switch (input) {
                 case "bye" -> {
-                    System.out.println("Bye. Hope to see you again soon!\n" + LINE_SEPARATOR);
+                    System.out.println("Bye. Hope to see you again soon!\n" +
+                            LINE_SEPARATOR);
                     return;
                 }
                 case "list" -> System.out.println("Here are the tasks in your list:\n" +
-                        tasksToString() +
-                        "\n" + LINE_SEPARATOR);
+                        tasksToString() + "\n" +
+                        LINE_SEPARATOR);
                 default -> {
-                    Matcher mark_m = mark_r.matcher(input);
-                    if (mark_m.find()) {
-                        Task task = tasks.get(Integer.parseInt(mark_m.group(1)) - 1);
+                    Matcher match = rx_mark.matcher(input);
+                    if (match.find()) {
+                        Task task = tasks.get(Integer.parseInt(match.group(1)) - 1);
                         task.markAsDone();
-                        System.out.println("Nice! I've marked this task as done:\n " + task.getDisplayString() +
-                                "\n" + LINE_SEPARATOR);
+                        System.out.println("Nice! I've marked this task as done:\n" +
+                                " " + task.getDisplayString() + "\n" +
+                                LINE_SEPARATOR);
                         continue;
                     }
 
-                    Matcher unmark_m = unmark_r.matcher(input);
-                    if (unmark_m.find()) {
-                        Task task = tasks.get(Integer.parseInt(unmark_m.group(1)) - 1);
+                    match = rx_unmark.matcher(input);
+                    if (match.find()) {
+                        Task task = tasks.get(Integer.parseInt(match.group(1)) - 1);
                         task.markUndone();
-                        System.out.println("OK, I've marked this task as not done yet:\n " + task.getDisplayString() +
-                                "\n" + LINE_SEPARATOR);
+                        System.out.println("OK, I've marked this task as not done yet:\n" +
+                                " " + task.getDisplayString() + "\n" +
+                                LINE_SEPARATOR);
                         continue;
                     }
 
-                    tasks.add(new Task(input));
-                    System.out.println("added: " + input + "\n" + LINE_SEPARATOR);
+                    match = rx_todo.matcher(input);
+                    if (match.find()) {
+                        addTask(new Todo(match.group(1)));
+                    }
+
+                    match = rx_deadline.matcher(input);
+                    if (match.find()) {
+                        addTask(new Deadline(match.group(1), match.group(2)));
+                    }
+
+                    match = rx_event.matcher(input);
+                    if (match.find()) {
+                        addTask(new Event(match.group(1), match.group(2), match.group(3)));
+                    }
                 }
             }
         }
