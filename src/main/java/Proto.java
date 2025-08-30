@@ -101,56 +101,65 @@ public class Proto {
         ArrayList<Parameter> parameters = parseParameters(match.group(3));
 
         switch (command) {
-        case "mark":
-            match = rx_number.matcher(text);
-            if (match.find()) {
-                Task task = tasks.get(Integer.parseInt(match.group(1)) - 1);
-                task.markAsDone();
-                System.out.println("Nice! I've marked this task as done:\n" +
-                        " " + task.getDisplayString());
-                return;
-            } else {
-                throw new ProtoInvalidArgument("expected numeric value");
+            case "mark" -> {
+                match = rx_number.matcher(text);
+                if (match.find()) {
+                    Task task = tasks.get(Integer.parseInt(match.group(0)) - 1);
+                    task.markAsDone();
+                    System.out.println("Nice! I've marked this task as done:\n" +
+                            " " + task.getDisplayString());
+                } else {
+                    throw new ProtoInvalidArgument("expected numeric value");
+                }
             }
-        case "unmark":
-            match = rx_number.matcher(text);
-            if (match.find()) {
-                Task task = tasks.get(Integer.parseInt(match.group(1)) - 1);
-                task.markUndone();
-                System.out.println("OK, I've marked this task as not done yet:\n" +
-                        " " + task.getDisplayString());
-                return;
-            } else {
-                throw new ProtoInvalidArgument("expected numeric value");
+            case "unmark" -> {
+                match = rx_number.matcher(text);
+                if (match.find()) {
+                    Task task = tasks.get(Integer.parseInt(match.group(0)) - 1);
+                    task.markUndone();
+                    System.out.println("OK, I've marked this task as not done yet:\n" +
+                            " " + task.getDisplayString());
+                } else {
+                    throw new ProtoInvalidArgument("expected numeric value");
+                }
             }
-        case "todo":
-            if (text.isEmpty()) {
-                throw new ProtoEmptyDescription();
-            } else {
-                addTask(new Todo(text));
-                return;
+            case "delete" -> {
+                match = rx_number.matcher(text);
+                if (match.find()) {
+                    Task task = tasks.remove(Integer.parseInt(match.group(0)) - 1);
+                    System.out.println("Noted! I've removed this task:\n" +
+                            " " + task.getDisplayString());
+                } else {
+                    throw new ProtoInvalidArgument("expected numeric value");
+                }
             }
-        case "deadline":
-            if (text.isEmpty()) {
-                throw new ProtoEmptyDescription();
-            } else {
-                HashMap<String, String> fields = validateFields(parameters, new HashSet<>(List.of("by")));
-                addTask(new Deadline(text, fields.get("by")));
-                return;
+            case "todo" -> {
+                if (text.isEmpty()) {
+                    throw new ProtoEmptyDescription();
+                } else {
+                    addTask(new Todo(text));
+                }
             }
-        case "event":
-            if (text.isEmpty()) {
-                throw new ProtoEmptyDescription();
-            } else {
-                HashMap<String, String> fields = validateFields(parameters, new HashSet<>(Arrays.asList("from", "to")));
-                addTask(new Event(text, fields.get("from"), fields.get("to")));
-                return;
+            case "deadline" -> {
+                if (text.isEmpty()) {
+                    throw new ProtoEmptyDescription();
+                } else {
+                    HashMap<String, String> fields = validateFields(parameters, new HashSet<>(List.of("by")));
+                    addTask(new Deadline(text, fields.get("by")));
+                }
             }
-        case "list":
-            System.out.println("Here are the tasks in your list:\n" + tasksToString());
-            return;
-        default:
-            throw new ProtoUnknownCommand(command);
+            case "event" -> {
+                if (text.isEmpty()) {
+                    throw new ProtoEmptyDescription();
+                } else {
+                    HashMap<String, String> fields = validateFields(parameters, new HashSet<>(Arrays.asList("from", "to")));
+                    addTask(new Event(text, fields.get("from"), fields.get("to")));
+                }
+            }
+            case "list" -> {
+                System.out.println("Here are the tasks in your list:\n" + tasksToString());
+            }
+            default -> throw new ProtoUnknownCommand(command);
         }
     }
 
