@@ -1,11 +1,20 @@
 package main.java;
 
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.awt.*;
+import java.util.*;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import main.java.Task;
+class Parameter {
+    public String name;
+    public String value;
+
+    public Parameter(String name, String value) {
+        this.name = name;
+        this.value = value;
+    }
+}
 
 public class Proto {
     static String LINE_SEPARATOR = "-".repeat(40);
@@ -28,8 +37,121 @@ public class Proto {
         tasks.add(task);
         System.out.println("Got it. I've added this task:\n" +
                 " " + task.getDisplayString() + "\n" +
-                "Now you have " + tasks.size() + " tasks in the list.\n" +
-                LINE_SEPARATOR);
+                "Now you have " + tasks.size() + " tasks in the list.");
+    }
+
+    private static final Pattern rx_arguments = Pattern.compile("^(\\S*)\\s*(.*?)\\s*(/.*)?$");
+    private static final Pattern rx_parameter = Pattern.compile("^/(\\S*)\\s*(.*?)(?=/|$)");
+    private static final Pattern rx_number = Pattern.compile("^\\d+$");
+
+
+    public static ArrayList<Parameter> parseParameters(String input) {
+        ArrayList<Parameter> parameters = new ArrayList<>();
+
+        if (input == null) {
+            return parameters;
+        } else {
+            while (true) {
+                Matcher match = rx_parameter.matcher(input);
+                if (!match.find()) {
+                    return parameters; // Should be unreachable
+                }
+                parameters.add(new Parameter(match.group(1), match.group(2)));
+                input = input.substring(match.end());
+
+                if (match.hitEnd()) {
+                    return parameters;
+                }
+            }
+        }
+    }
+
+    public static HashMap<String, String> validateFields(
+            ArrayList<Parameter> parameters, HashSet<String> fieldNames) throws ProtoException {
+        HashMap<String, String> fields = new HashMap<>();
+
+        for (Parameter parameter : parameters) {
+            if (!fieldNames.contains(parameter.name)) {
+                throw new ProtoUnexpectedField(parameter.name);
+            } else if (fields.containsKey(parameter.name)) {
+                throw new ProtoDuplicateField(parameter.name);
+            } else if (parameter.value.isEmpty()) {
+                throw new ProtoEmptyField(parameter.name);
+            } else {
+                fields.put(parameter.name, parameter.value);
+            }
+        }
+
+        for (String fieldName: fieldNames) {
+            if (!fields.containsKey(fieldName)) {
+                throw new ProtoMissingField(fieldName);
+            }
+        }
+
+        return fields;
+    }
+
+    public static void processCommand(String input) throws ProtoException {
+        Matcher match = rx_arguments.matcher(input);
+        if (!match.find()) {
+            return; // Should be unreachable
+        }
+        String command = match.group(1);
+        String text = match.group(2);
+        ArrayList<Parameter> parameters = parseParameters(match.group(3));
+
+        switch (command) {
+        case "mark":
+            match = rx_number.matcher(text);
+            if (match.find()) {
+                Task task = tasks.get(Integer.parseInt(match.group(1)) - 1);
+                task.markAsDone();
+                System.out.println("Nice! I've marked this task as done:\n" +
+                        " " + task.getDisplayString());
+                return;
+            } else {
+                throw new ProtoInvalidArgument("expected numeric value");
+            }
+        case "unmark":
+            match = rx_number.matcher(text);
+            if (match.find()) {
+                Task task = tasks.get(Integer.parseInt(match.group(1)) - 1);
+                task.markUndone();
+                System.out.println("OK, I've marked this task as not done yet:\n" +
+                        " " + task.getDisplayString());
+                return;
+            } else {
+                throw new ProtoInvalidArgument("expected numeric value");
+            }
+        case "todo":
+            if (text.isEmpty()) {
+                throw new ProtoEmptyDescription();
+            } else {
+                addTask(new Todo(text));
+                return;
+            }
+        case "deadline":
+            if (text.isEmpty()) {
+                throw new ProtoEmptyDescription();
+            } else {
+                HashMap<String, String> fields = validateFields(parameters, new HashSet<>(List.of("by")));
+                addTask(new Deadline(text, fields.get("by")));
+                return;
+            }
+        case "event":
+            if (text.isEmpty()) {
+                throw new ProtoEmptyDescription();
+            } else {
+                HashMap<String, String> fields = validateFields(parameters, new HashSet<>(Arrays.asList("from", "to")));
+                addTask(new Event(text, fields.get("from"), fields.get("to")));
+                return;
+            }
+        case "list":
+            System.out.println("Here are the tasks in your list:\n" + tasksToString());
+            return;
+        default:
+            throw new ProtoUnknownCommand(command);
+        }
     }
 
     public static void main(String[] args) {
@@ -41,62 +163,23 @@ public class Proto {
 
         Scanner reader = new Scanner(System.in);
 
-        Pattern rx_mark = Pattern.compile("^mark\\s+(\\d+)$");
-        Pattern rx_unmark = Pattern.compile("^unmark\\s+(\\d+)$");
-        Pattern rx_todo = Pattern.compile("^todo\\s+(.+)$");
-        Pattern rx_deadline = Pattern.compile("^deadline\\s+(.+?)\\s+/by\\s+(.+)$");
-        Pattern rx_event = Pattern.compile("^event\\s+(.+)\\s+/from\\s+(.+?)\\s+/to\\s+(.+)$");
-
         while (true) {
             System.out.print("> ");
             String input = reader.nextLine();
             System.out.println(LINE_SEPARATOR);
 
-            switch (input) {
-                case "bye" -> {
-                    System.out.println("Bye. Hope to see you again soon!\n" +
-                            LINE_SEPARATOR);
-                    return;
-                }
-                case "list" -> System.out.println("Here are the tasks in your list:\n" +
-                        tasksToString() + "\n" +
+            if (input.equals("bye")) {
+                System.out.println("Bye. Hope to see you again soon!\n" +
                         LINE_SEPARATOR);
-                default -> {
-                    Matcher match = rx_mark.matcher(input);
-                    if (match.find()) {
-                        Task task = tasks.get(Integer.parseInt(match.group(1)) - 1);
-                        task.markAsDone();
-                        System.out.println("Nice! I've marked this task as done:\n" +
-                                " " + task.getDisplayString() + "\n" +
-                                LINE_SEPARATOR);
-                        continue;
-                    }
-
-                    match = rx_unmark.matcher(input);
-                    if (match.find()) {
-                        Task task = tasks.get(Integer.parseInt(match.group(1)) - 1);
-                        task.markUndone();
-                        System.out.println("OK, I've marked this task as not done yet:\n" +
-                                " " + task.getDisplayString() + "\n" +
-                                LINE_SEPARATOR);
-                        continue;
-                    }
-
-                    match = rx_todo.matcher(input);
-                    if (match.find()) {
-                        addTask(new Todo(match.group(1)));
-                    }
-
-                    match = rx_deadline.matcher(input);
-                    if (match.find()) {
-                        addTask(new Deadline(match.group(1), match.group(2)));
-                    }
-
-                    match = rx_event.matcher(input);
-                    if (match.find()) {
-                        addTask(new Event(match.group(1), match.group(2), match.group(3)));
-                    }
+                return;
+            } else {
+                try {
+                    processCommand(input);
+                } catch (ProtoException e) {
+                    System.out.println(e.getMessage());
                 }
+
+                System.out.println(LINE_SEPARATOR);
             }
         }
     }
