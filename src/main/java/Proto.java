@@ -1,6 +1,8 @@
 package main.java;
 
-import java.awt.*;
+import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -17,8 +19,8 @@ class Parameter {
 }
 
 public class Proto {
-    static String LINE_SEPARATOR = "-".repeat(40);
-    static ArrayList<Task> tasks = new ArrayList<>();
+    private static final String LINE_SEPARATOR = "-".repeat(40);
+    private static ArrayList<Task> tasks;
 
     public static String tasksToString() {
         StringBuilder sb = new StringBuilder();
@@ -41,7 +43,7 @@ public class Proto {
     }
 
     private static final Pattern rx_arguments = Pattern.compile("^(\\S*)\\s*(.*?)\\s*(/.*)?$");
-    private static final Pattern rx_parameter = Pattern.compile("^/(\\S*)\\s*(.*?)(?=/|$)");
+    private static final Pattern rx_parameter = Pattern.compile("^/(\\S*)\\s*(.*?)\\s*(?=/|$)");
     private static final Pattern rx_number = Pattern.compile("^\\d+$");
 
 
@@ -89,6 +91,51 @@ public class Proto {
         }
 
         return fields;
+    }
+
+    private static final File SAVE_FILE = Paths.get(".", "data", "tasks.txt").toFile();
+
+    public static void writeSave() {
+        try (FileWriter writer = new FileWriter(SAVE_FILE)) {
+            for (Task task: tasks) {
+                writer.write(task.serialize() + "\n");
+            }
+        } catch (IOException e) {
+            System.out.println("There was an error writing the save data: " + e.getMessage());
+        }
+    }
+
+    public static boolean readSave() {
+        Proto.tasks = new ArrayList<>();
+
+        try {
+            SAVE_FILE.getParentFile().mkdirs();
+            SAVE_FILE.createNewFile();
+        } catch (IOException e) {
+            System.out.println("There was an error reading the save data: " + e.getMessage());
+            return false;
+        }
+
+        try (FileReader reader = new FileReader(SAVE_FILE)) {
+            BufferedReader readStream = new BufferedReader(reader);
+            String line;
+            int lineNumber = 0;
+
+            while ((line = readStream.readLine()) != null) {
+                lineNumber++;
+                try {
+                    Proto.tasks.add(Task.deserialize(line));
+                } catch (ProtoInvalidData e) {
+                    System.out.println("Line " + lineNumber + ": " + e.getMessage());
+                    return false;
+                }
+            }
+
+            return true;
+        } catch (IOException e) {
+            System.out.println("There was an error reading the save data: " + e.getMessage());
+            return false;
+        }
     }
 
     public static void processCommand(String input) throws ProtoException {
@@ -157,13 +204,25 @@ public class Proto {
                 }
             }
             case "list" -> {
-                System.out.println("Here are the tasks in your list:\n" + tasksToString());
+                if (tasks.isEmpty()) {
+                    System.out.println("You don't have any tasks in your list.");
+                } else {
+                    System.out.println("Here are the tasks in your list:\n" + tasksToString());
+                }
+                return;
             }
             default -> throw new ProtoUnknownCommand(command);
         }
+
+        // Save changes to hard disk
+        writeSave();
     }
 
     public static void main(String[] args) {
+        if (!readSave()) {
+            return;
+        }
+
         System.out.println(LINE_SEPARATOR + "\n" +
                 "Hello! I'm Proto\n" +
                 "What can I do for you?\n" +
