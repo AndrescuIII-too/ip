@@ -101,12 +101,20 @@ public class Proto {
                 writer.write(task.serialize() + "\n");
             }
         } catch (IOException e) {
-            System.out.println("An error occured");
+            System.out.println("There was an error writing the save data: " + e.getMessage());
         }
     }
 
     public static boolean readSave() {
         Proto.tasks = new ArrayList<>();
+
+        try {
+            SAVE_FILE.getParentFile().mkdirs();
+            SAVE_FILE.createNewFile();
+        } catch (IOException e) {
+            System.out.println("There was an error reading the save data: " + e.getMessage());
+            return false;
+        }
 
         try (FileReader reader = new FileReader(SAVE_FILE)) {
             BufferedReader readStream = new BufferedReader(reader);
@@ -125,7 +133,7 @@ public class Proto {
 
             return true;
         } catch (IOException e) {
-            System.out.println("An error occured");
+            System.out.println("There was an error reading the save data: " + e.getMessage());
             return false;
         }
     }
@@ -196,7 +204,11 @@ public class Proto {
                 }
             }
             case "list" -> {
-                System.out.println("Here are the tasks in your list:\n" + tasksToString());
+                if (tasks.isEmpty()) {
+                    System.out.println("You don't have any tasks in your list.");
+                } else {
+                    System.out.println("Here are the tasks in your list:\n" + tasksToString());
+                }
                 return;
             }
             default -> throw new ProtoUnknownCommand(command);
