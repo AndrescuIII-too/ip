@@ -235,6 +235,10 @@ public class Proto {
                 }
                 return;
             }
+            case "clear" -> {
+                tasks.clear();
+                System.out.println("Cleared all tasks from your list!");
+            }
             default -> throw new ProtoUnknownCommand(command);
         }
 
