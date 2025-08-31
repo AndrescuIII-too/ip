@@ -1,10 +1,19 @@
 package main.java;
 
-import java.io.*;
-import java.nio.file.Path;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -192,15 +201,30 @@ public class Proto {
                     throw new ProtoEmptyDescription();
                 } else {
                     HashMap<String, String> fields = validateFields(parameters, new HashSet<>(List.of("by")));
-                    addTask(new Deadline(text, fields.get("by")));
+
+                    try {
+                        addTask(new Deadline(text, LocalDate.parse(fields.get("by"))));
+                    } catch (DateTimeParseException e) {
+                        System.out.println("Trouble parsing date argument");
+                        return;
+                    }
                 }
             }
             case "event" -> {
                 if (text.isEmpty()) {
                     throw new ProtoEmptyDescription();
                 } else {
-                    HashMap<String, String> fields = validateFields(parameters, new HashSet<>(Arrays.asList("from", "to")));
-                    addTask(new Event(text, fields.get("from"), fields.get("to")));
+                    HashMap<String, String> fields = validateFields(parameters,
+                            new HashSet<>(Arrays.asList("from", "to")));
+
+                    try {
+                        addTask(new Event(text,
+                                LocalDate.parse(fields.get("from")),
+                                LocalDate.parse(fields.get("to"))));
+                    } catch (DateTimeParseException e) {
+                        System.out.println("Trouble parsing date arguments");
+                        return;
+                    }
                 }
             }
             case "list" -> {
