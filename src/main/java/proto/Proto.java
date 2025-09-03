@@ -1,15 +1,15 @@
-package main.java.proto;
+package proto;
 
-import main.java.proto.command.Command;
-import main.java.proto.command.Parser;
-import main.java.proto.exception.ProtoException;
-import main.java.proto.exception.ProtoInvalidData;
-import main.java.proto.exception.ProtoUnknownCommand;
-import main.java.proto.task.Deadline;
-import main.java.proto.task.Event;
-import main.java.proto.task.Task;
-import main.java.proto.task.TaskList;
-import main.java.proto.task.Todo;
+import proto.command.Command;
+import proto.command.Parser;
+import proto.exception.ProtoException;
+import proto.exception.ProtoInvalidData;
+import proto.exception.ProtoUnknownCommand;
+import proto.task.Deadline;
+import proto.task.Event;
+import proto.task.Task;
+import proto.task.TaskList;
+import proto.task.Todo;
 
 import java.io.File;
 import java.io.IOException;

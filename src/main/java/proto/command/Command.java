@@ -1,4 +1,4 @@
-package main.java.proto.command;
+package proto.command;
 
 import java.util.Collections;
 import java.util.List;

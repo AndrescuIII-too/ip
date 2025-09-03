@@ -1,4 +1,4 @@
-package main.java.proto.exception;
+package proto.exception;
 
 public class ProtoInvalidData extends ProtoException {
     private int errorIndex = -1;

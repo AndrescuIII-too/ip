@@ -1,4 +1,4 @@
-package main.java.proto.task;
+package proto.task;
 
 import java.util.ArrayList;
 import java.util.Collections;

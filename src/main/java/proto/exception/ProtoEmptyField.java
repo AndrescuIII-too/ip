@@ -1,4 +1,4 @@
-package main.java.proto.exception;
+package proto.exception;
 
 public class ProtoEmptyField extends ProtoException {
     public ProtoEmptyField(String fieldName) {

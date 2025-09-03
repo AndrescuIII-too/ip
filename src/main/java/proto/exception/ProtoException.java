@@ -1,4 +1,4 @@
-package main.java.proto.exception;
+package proto.exception;
 
 public class ProtoException extends Exception{
     public ProtoException(String message) {

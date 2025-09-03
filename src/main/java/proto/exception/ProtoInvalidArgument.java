@@ -1,4 +1,4 @@
-package main.java.proto.exception;
+package proto.exception;
 
 public class ProtoInvalidArgument extends ProtoException {
     public ProtoInvalidArgument(String errorDescription) {

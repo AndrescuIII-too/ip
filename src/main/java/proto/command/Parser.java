@@ -1,11 +1,11 @@
-package main.java.proto.command;
+package proto.command;
 
-import main.java.proto.exception.ProtoDuplicateField;
-import main.java.proto.exception.ProtoEmptyField;
-import main.java.proto.exception.ProtoException;
-import main.java.proto.exception.ProtoInvalidArgument;
-import main.java.proto.exception.ProtoMissingField;
-import main.java.proto.exception.ProtoUnexpectedField;
+import proto.exception.ProtoDuplicateField;
+import proto.exception.ProtoEmptyField;
+import proto.exception.ProtoException;
+import proto.exception.ProtoInvalidArgument;
+import proto.exception.ProtoMissingField;
+import proto.exception.ProtoUnexpectedField;
 
 import java.util.ArrayList;
 import java.util.HashMap;

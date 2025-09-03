@@ -1,4 +1,4 @@
-package main.java.proto.exception;
+package proto.exception;
 
 public class ProtoUnexpectedField extends ProtoException {
     public ProtoUnexpectedField(String fieldName) {

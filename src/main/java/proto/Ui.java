@@ -1,8 +1,8 @@
-package main.java.proto;
+package proto;
 
-import main.java.proto.exception.ProtoException;
-import main.java.proto.task.Task;
-import main.java.proto.task.TaskList;
+import proto.exception.ProtoException;
+import proto.task.Task;
+import proto.task.TaskList;
 
 import java.io.IOException;
 import java.util.Scanner;

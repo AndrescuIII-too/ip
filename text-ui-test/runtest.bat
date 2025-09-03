@@ -7,7 +7,7 @@ REM delete output from previous run
 if exist ACTUAL.TXT del ACTUAL.TXT
 
 REM compile the code into the bin folder
-"C:\Program Files\Java\jdk-17\bin\javac.exe" -cp ..\src\main\java -Xlint:none -sourcepath ..\src\ -d ..\bin ..\src\main\java\proto\Proto.java
+"C:\Program Files\Java\jdk-17\bin\javac.exe" -cp ..\src\main\java -Xlint:none -sourcepath ..\src\main\java\ -d ..\bin ..\src\main\java\proto\Proto.java
 IF ERRORLEVEL 1 (
     echo ********** BUILD FAILURE **********
     exit /b 1
@@ -15,7 +15,7 @@ IF ERRORLEVEL 1 (
 REM no error here, errorlevel == 0
 
 REM run the program, feed commands from input.txt file and redirect the output to the ACTUAL.TXT
-"C:\Program Files\Java\jdk-17\bin\java.exe" -classpath ..\bin main.java.proto.Proto < input.txt > ACTUAL.TXT
+"C:\Program Files\Java\jdk-17\bin\java.exe" -classpath ..\bin proto.Proto < input.txt > ACTUAL.TXT
 
 REM compare the output to the expected output
 FC ACTUAL.TXT EXPECTED.TXT

@@ -1,6 +1,6 @@
-package main.java.proto.task;
+package proto.task;
 
-import main.java.proto.exception.ProtoInvalidData;
+import proto.exception.ProtoInvalidData;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

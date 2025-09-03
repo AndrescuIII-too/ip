@@ -1,8 +1,8 @@
-package main.java.proto;
+package proto;
 
-import main.java.proto.exception.ProtoInvalidData;
-import main.java.proto.task.Task;
-import main.java.proto.task.TaskList;
+import proto.exception.ProtoInvalidData;
+import proto.task.Task;
+import proto.task.TaskList;
 
 import java.io.BufferedReader;
 import java.io.File;
