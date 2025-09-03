@@ -58,7 +58,7 @@ public class Parser {
             }
         }
 
-        for (String fieldName: fieldNames) {
+        for (String fieldName : fieldNames) {
             if (!fields.containsKey(fieldName)) {
                 throw new ProtoMissingField(fieldName);
             }

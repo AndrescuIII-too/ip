@@ -1,6 +1,6 @@
 package proto.exception;
 
-public class ProtoMissingField extends ProtoException{
+public class ProtoMissingField extends ProtoException {
     public ProtoMissingField(String fieldName) {
         super("Missing field \"" + fieldName + "\"");
     }

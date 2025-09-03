@@ -20,7 +20,7 @@ public class Storage {
 
     public void save(TaskList taskList) throws IOException {
         try (FileWriter writer = new FileWriter(this.file)) {
-            for (Task task: taskList.getTasks()) {
+            for (Task task : taskList.getTasks()) {
                 writer.write(task.serialize() + "\n");
             }
         }
