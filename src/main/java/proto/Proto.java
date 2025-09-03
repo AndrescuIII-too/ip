@@ -47,101 +47,101 @@ public class Proto {
 
             try {
                 switch (command.name()) {
-                    case "bye" -> {
-                        this.ui.showGoodbye();
-                        this.ui.showDivider();
-                        return;
+                case "bye" -> {
+                    this.ui.showGoodbye();
+                    this.ui.showDivider();
+                    return;
+                }
+                case "mark" -> {
+                    int index = Parser.parseNumber(command.body());
+                    try {
+                        Task task = this.taskList.get(index - 1);
+                        task.markAsDone();
+                        this.ui.showTaskDone(task);
+                    } catch (IndexOutOfBoundsException e) {
+                        this.ui.showIndexError(index);
                     }
-                    case "mark" -> {
-                        int index = Parser.parseNumber(command.body());
-                        try {
-                            Task task = this.taskList.get(index - 1);
-                            task.markAsDone();
-                            this.ui.showTaskDone(task);
-                        } catch (IndexOutOfBoundsException e) {
-                            this.ui.showIndexError(index);
-                        }
+                }
+                case "unmark" -> {
+                    int index = Parser.parseNumber(command.body());
+                    try {
+                        Task task = this.taskList.get(index - 1);
+                        task.markUndone();
+                        this.ui.showTaskUndone(task);
+                    } catch (IndexOutOfBoundsException e) {
+                        this.ui.showIndexError(index);
                     }
-                    case "unmark" -> {
-                        int index = Parser.parseNumber(command.body());
-                        try {
-                            Task task = this.taskList.get(index - 1);
-                            task.markUndone();
-                            this.ui.showTaskUndone(task);
-                        } catch (IndexOutOfBoundsException e) {
-                            this.ui.showIndexError(index);
-                        }
+                }
+                case "delete" -> {
+                    int index = Parser.parseNumber(command.body());
+                    try {
+                        Task task = this.taskList.remove(index - 1);
+                        this.ui.showTaskRemoved(task);
+                    } catch (IndexOutOfBoundsException e) {
+                        this.ui.showIndexError(index);
                     }
-                    case "delete" -> {
-                        int index = Parser.parseNumber(command.body());
-                        try {
-                            Task task = this.taskList.remove(index - 1);
-                            this.ui.showTaskRemoved(task);
-                        } catch (IndexOutOfBoundsException e) {
-                            this.ui.showIndexError(index);
-                        }
-                    }
-                    case "todo" -> {
-                        if (command.body().isEmpty()) {
-                            this.ui.showEmptyDescriptionError();
-                            continue;
-                        }
-
-                        Task task = new Todo(command.body());
-                        this.taskList.add(task);
-                        this.ui.showTaskAdded(task, this.taskList);
-                    }
-                    case "deadline" -> {
-                        if (command.body().isEmpty()) {
-                            this.ui.showEmptyDescriptionError();
-                            continue;
-                        }
-
-                        HashMap<String, String> fields = Parser.validateFields(command.parameters(),
-                                new HashSet<>(List.of("by")));
-
-                        Task task;
-                        try {
-                            task = new Deadline(command.body(), fields.get("by"));
-                        } catch (DateTimeParseException e) {
-                            this.ui.showDateParseError(e.getParsedString());
-                            continue;
-                        }
-                        this.taskList.add(task);
-                        this.ui.showTaskAdded(task, this.taskList);
-                    }
-                    case "event" -> {
-                        if (command.body().isEmpty()) {
-                            this.ui.showEmptyDescriptionError();
-                            continue;
-                        }
-
-                        HashMap<String, String> fields = Parser.validateFields(command.parameters(),
-                                new HashSet<>(List.of("from", "to")));
-
-                        Task task;
-                        try {
-                            task = new Event(command.body(), fields.get("from"), fields.get("to"));
-                        } catch (DateTimeParseException e) {
-                            this.ui.showDateParseError(e.getParsedString());
-                            continue;
-                        }
-                        this.taskList.add(task);
-                        this.ui.showTaskAdded(task, this.taskList);
-                    }
-                    case "list" -> {
-                        if (this.taskList.isEmpty()) {
-                            this.ui.showTaskListEmpty();
-                        } else {
-                            this.ui.showTaskList(this.taskList);
-                        }
+                }
+                case "todo" -> {
+                    if (command.body().isEmpty()) {
+                        this.ui.showEmptyDescriptionError();
                         continue;
                     }
-                    case "clear" -> {
-                        this.taskList.clear();
-                        this.ui.showTaskListCleared();
+
+                    Task task = new Todo(command.body());
+                    this.taskList.add(task);
+                    this.ui.showTaskAdded(task, this.taskList);
+                }
+                case "deadline" -> {
+                    if (command.body().isEmpty()) {
+                        this.ui.showEmptyDescriptionError();
+                        continue;
                     }
-                    default -> throw new ProtoUnknownCommand(command.name());
+
+                    HashMap<String, String> fields = Parser.validateFields(command.parameters(),
+                            new HashSet<>(List.of("by")));
+
+                    Task task;
+                    try {
+                        task = new Deadline(command.body(), fields.get("by"));
+                    } catch (DateTimeParseException e) {
+                        this.ui.showDateParseError(e.getParsedString());
+                        continue;
+                    }
+                    this.taskList.add(task);
+                    this.ui.showTaskAdded(task, this.taskList);
+                }
+                case "event" -> {
+                    if (command.body().isEmpty()) {
+                        this.ui.showEmptyDescriptionError();
+                        continue;
+                    }
+
+                    HashMap<String, String> fields = Parser.validateFields(command.parameters(),
+                            new HashSet<>(List.of("from", "to")));
+
+                    Task task;
+                    try {
+                        task = new Event(command.body(), fields.get("from"), fields.get("to"));
+                    } catch (DateTimeParseException e) {
+                        this.ui.showDateParseError(e.getParsedString());
+                        continue;
+                    }
+                    this.taskList.add(task);
+                    this.ui.showTaskAdded(task, this.taskList);
+                }
+                case "list" -> {
+                    if (this.taskList.isEmpty()) {
+                        this.ui.showTaskListEmpty();
+                    } else {
+                        this.ui.showTaskList(this.taskList);
+                    }
+                    continue;
+                }
+                case "clear" -> {
+                    this.taskList.clear();
+                    this.ui.showTaskListCleared();
+                }
+                default -> throw new ProtoUnknownCommand(command.name());
                 }
 
                 // Save changes to hard disk

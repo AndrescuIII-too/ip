@@ -7,7 +7,7 @@ import java.time.format.DateTimeParseException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Event extends Task{
+public class Event extends Task {
     private final LocalDate startTime;
     private final LocalDate endTime;
 

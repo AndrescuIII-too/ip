@@ -1,6 +1,7 @@
 package proto.task;
 
 import org.junit.jupiter.api.Test;
+
 import proto.exception.ProtoInvalidData;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -12,6 +13,7 @@ public class TodoTest {
         assertEquals(task.description, "read book");
         assertTrue(task.isDone);
     }
+
     @Test
     public void deserializeTestPipe() {
         Todo task = assertDoesNotThrow(() -> Todo.deserialize("T | 1 | escape\\|pipe"));
