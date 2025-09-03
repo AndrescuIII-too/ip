@@ -35,6 +35,11 @@ public abstract class Task {
         return this.isDone ? "X" : " ";
     }
 
+    /**
+     * Returns task as string to display in ui.
+     *
+     * @return Task as string.
+     */
     public String getDisplayString() {
         return "[" + this.getTaskIcon() + "]" +
                 "[" + this.getStatusIcon() + "] " + this.description;
@@ -42,6 +47,14 @@ public abstract class Task {
 
     public abstract String serialize();
 
+    /**
+     * Deserializes task given string.
+     * Used mainly for loading the save file.
+     *
+     * @param data Line to deserialize.
+     * @return task.
+     * @throws ProtoInvalidData If line is not a valid serialized task.
+     */
     public static Task deserialize(String data) throws ProtoInvalidData {
         char type;
         switch (type = data.charAt(0)) {
@@ -60,10 +73,22 @@ public abstract class Task {
         }
     }
 
+    /**
+     * Encodes string for serialization.
+     *
+     * @param input Input string.
+     * @return encoded string.
+     */
     protected static String encodeString(String input) {
         return input.replaceAll("\\|", "\\\\|");
     }
 
+    /**
+     * Decodes string for deserialization.
+     *
+     * @param input Input string.
+     * @return decoded string.
+     */
     protected static String decodeString(String input) {
         return input.replaceAll("\\\\\\|", "|");
     }

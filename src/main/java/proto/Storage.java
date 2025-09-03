@@ -18,6 +18,13 @@ public class Storage {
         this.file = file;
     }
 
+
+    /**
+     * Save task list to file.
+     *
+     * @param taskList Task list.
+     * @throws IOException If there was an error writing to the specified file.
+     */
     public void save(TaskList taskList) throws IOException {
         try (FileWriter writer = new FileWriter(this.file)) {
             for (Task task: taskList.getTasks()) {
@@ -26,6 +33,13 @@ public class Storage {
         }
     }
 
+    /**
+     * Load task list from file.
+     *
+     * @return Task list.
+     * @throws IOException      If there was an error reading from the specified file.
+     * @throws ProtoInvalidData If there was a deserialization error.
+     */
     public TaskList load() throws IOException, ProtoInvalidData {
         ArrayList<Task> tasks = new ArrayList<>();
 

@@ -15,6 +15,11 @@ public class TaskList {
         return Collections.unmodifiableList(this.tasks);
     }
 
+    /**
+     * Returns task list as string to display in ui.
+     *
+     * @return Task list as string.
+     */
     public String display() {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < this.tasks.size(); i++) {
