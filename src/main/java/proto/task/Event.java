@@ -1,4 +1,6 @@
-package main.java;
+package main.java.proto.task;
+
+import main.java.proto.exception.ProtoInvalidData;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -13,6 +15,12 @@ public class Event extends Task{
         super(description);
         this.startTime = startTime;
         this.endTime = endTime;
+    }
+
+    public Event(String description, String startTime, String endTime) {
+        super(description);
+        this.startTime = LocalDate.parse(startTime);
+        this.endTime = LocalDate.parse(endTime);
     }
 
     @Override

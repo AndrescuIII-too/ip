@@ -1,4 +1,4 @@
-package main.java;
+package main.java.proto.exception;
 
 public class ProtoUnknownCommand extends ProtoException{
     public ProtoUnknownCommand(String command) {

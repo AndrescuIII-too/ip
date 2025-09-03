@@ -1,4 +1,6 @@
-package main.java;
+package main.java.proto.task;
+
+import main.java.proto.exception.ProtoInvalidData;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -11,6 +13,11 @@ public class Deadline extends Task {
     public Deadline(String description, LocalDate endTime) {
         super(description);
         this.endTime = endTime;
+    }
+
+    public Deadline(String description, String endTime) throws DateTimeParseException {
+        super(description);
+        this.endTime = LocalDate.parse(endTime);
     }
 
     @Override
