@@ -49,12 +49,12 @@ public class Event extends Task{
                 this.getEndTimeString();
     }
 
-    private static final Pattern rx_deserialize = Pattern.compile(
+    private static final Pattern RX_DESERIALIZE = Pattern.compile(
             "^E \\| ([01]) \\| ((?:[^|]|\\\\\\|)*) \\| ((?:[^|]|\\\\\\|)*) \\| ((?:[^|]|\\\\\\|)*)$");
 
 
     public static Event deserialize(String data) throws ProtoInvalidData, DateTimeParseException {
-        Matcher match = rx_deserialize.matcher(data);
+        Matcher match = RX_DESERIALIZE.matcher(data);
 
         if (match.find()) {
             Event event = new Event(

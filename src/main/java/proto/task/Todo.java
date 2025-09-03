@@ -20,10 +20,10 @@ public class Todo extends Task {
                 Task.encodeString(this.description);
     }
 
-    private static final Pattern rx_deserialize = Pattern.compile("^T \\| ([01]) \\| ((?:[^|]|\\\\\\|)*)$");
+    private static final Pattern RX_DESERIALIZE = Pattern.compile("^T \\| ([01]) \\| ((?:[^|]|\\\\\\|)*)$");
 
     public static Todo deserialize(String data) throws ProtoInvalidData {
-        Matcher match = rx_deserialize.matcher(data);
+        Matcher match = RX_DESERIALIZE.matcher(data);
 
         if (match.find()) {
             Todo todo = new Todo(Task.decodeString(match.group(2)));

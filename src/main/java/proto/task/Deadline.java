@@ -41,12 +41,12 @@ public class Deadline extends Task {
                 this.getEndTimeString();
     }
 
-    private static final Pattern rx_deserialize = Pattern.compile(
+    private static final Pattern RX_DESERIALIZE = Pattern.compile(
             "^D \\| ([01]) \\| ((?:[^|]|\\\\\\|)*) \\| ((?:[^|]|\\\\\\|)*)$");
 
 
     public static Deadline deserialize(String data) throws ProtoInvalidData, DateTimeParseException {
-        Matcher match = rx_deserialize.matcher(data);
+        Matcher match = RX_DESERIALIZE.matcher(data);
 
         if (match.find()) {
             Deadline deadline = new Deadline(
