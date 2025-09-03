@@ -133,9 +133,18 @@ public class Proto {
                     if (this.taskList.isEmpty()) {
                         this.ui.showTaskListEmpty();
                     } else {
-                        this.ui.showTaskList(this.taskList);
+                        this.ui.showTaskList(this.taskList.getTasks());
                     }
                     continue;
+                }
+                case "find" -> {
+                    List<Task> matchedTasks = this.taskList.find(command.body());
+
+                    if (matchedTasks.isEmpty()) {
+                        this.ui.showFindNothing(command.body());
+                    } else {
+                        this.ui.showFindResults(matchedTasks);
+                    }
                 }
                 case "clear" -> {
                     this.taskList.clear();

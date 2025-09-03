@@ -3,6 +3,7 @@ package proto.task;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class TaskList {
     private final ArrayList<Task> tasks;
@@ -20,10 +21,10 @@ public class TaskList {
      *
      * @return Task list as string.
      */
-    public String display() {
+    public static String getDisplayString(List<Task> tasks) {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < this.tasks.size(); i++) {
-            Task task = this.tasks.get(i);
+        for (int i = 0; i < tasks.size(); i++) {
+            Task task = tasks.get(i);
             sb.append(i + 1)
                     .append(".")
                     .append(task.getDisplayString())
@@ -31,6 +32,19 @@ public class TaskList {
         }
         sb.deleteCharAt(sb.length() - 1);
         return sb.toString();
+    }
+
+    public List<Task> find(String text) {
+        Pattern rx = Pattern.compile(Pattern.quote(text), Pattern.CASE_INSENSITIVE);
+        List<Task> matchedTasks = new ArrayList<>();
+
+        for (Task task : this.tasks) {
+            if (rx.matcher(task.description).find()) {
+                matchedTasks.add(task);
+            }
+        }
+
+        return matchedTasks;
     }
 
     public void add(Task task) {

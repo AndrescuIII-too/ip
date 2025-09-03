@@ -54,7 +54,7 @@ public class Parser {
      *
      * @param parameters List of parameters.
      * @param fieldNames Expected fields.
-     * @return
+     * @return Mapping of field names to values.
      * @throws ProtoException If field is not included in expected fields, or field is empty, duplicated, or missing
      */
     public static HashMap<String, String> validateFields(

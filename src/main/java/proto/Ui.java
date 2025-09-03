@@ -5,6 +5,7 @@ import proto.task.Task;
 import proto.task.TaskList;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Scanner;
 
 public class Ui {
@@ -83,8 +84,15 @@ public class Ui {
         System.out.println("You don't have any tasks in your list.");
     }
 
-    public void showTaskList(TaskList taskList) {
-        System.out.println("Here are the tasks in your list:\n" + taskList.display());
+    public void showFindNothing(String text) {
+        System.out.println("No tasks with description \"" + text + "\" found");
+    }
+
+    public void showTaskList(List<Task> tasks) {
+        System.out.println("Here are the tasks in your list:\n" + TaskList.getDisplayString(tasks));
+    }
+    public void showFindResults(List<Task> tasks) {
+        System.out.println("Here are the matching tasks in your list:\n" + TaskList.getDisplayString(tasks));
     }
 
     public void showTaskListCleared() {
