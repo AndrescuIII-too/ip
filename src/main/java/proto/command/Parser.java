@@ -21,6 +21,13 @@ public class Parser {
     private static final Pattern RX_NUMBER = Pattern.compile("^\\d+$");
 
 
+    /**
+     * Parse string into list of parameters.
+     * Parameters take the form "/[name] [value]".
+     *
+     * @param input String to parse.
+     * @return List of parameters.
+     */
     public static List<Parameter> parseParameters(String input) {
         List<Parameter> parameters = new ArrayList<>();
 
@@ -42,6 +49,14 @@ public class Parser {
         }
     }
 
+    /**
+     * Checks if expected fields are assigned once.
+     *
+     * @param parameters List of parameters.
+     * @param fieldNames Expected fields.
+     * @return
+     * @throws ProtoException If field is not included in expected fields, or field is empty, duplicated, or missing
+     */
     public static HashMap<String, String> validateFields(
             List<Parameter> parameters, HashSet<String> fieldNames) throws ProtoException {
         HashMap<String, String> fields = new HashMap<>();
