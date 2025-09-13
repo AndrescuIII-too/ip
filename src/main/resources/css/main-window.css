@@ -1,17 +1,14 @@
-.root {
-    main-color: #541b70;
-    second-color: #ffd238;
-    -fx-background-color: derive(main-color, -0.6);
-}
+@import "base.css"
 
 .text-field {
     -fx-background-color: derive(main-color, -0.4);
-    -fx-font: 20px "Arial";
+    -fx-font: 20px "Terminus (TTF)";
+    -fx-text-fill: white;
 }
 
 .button {
     -fx-background-color: main-color;
-    -fx-font: italic bold 16px "Arial";
+    -fx-font: bold 20px "Terminus (TTF)";
     -fx-text-fill: white;
 }
 

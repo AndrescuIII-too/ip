@@ -1,12 +1,13 @@
+@import "base.css"
+
 .label {
-    main-color: #541b70;
-    second-color: #ffd238;
     -fx-background-color: derive(main-color, -0.2);
     -fx-border-color: second-color;
     -fx-border-width: 2px;
     -fx-background-radius: 14px;
     -fx-border-radius: 12px;
     -fx-text-fill: white;
+    -fx-font: 16px "Terminus (TTF)";
 }
 
 .reply-label {
