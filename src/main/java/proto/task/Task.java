@@ -1,6 +1,9 @@
 package proto.task;
 
 import proto.exception.ProtoInvalidData;
+import proto.task.types.Deadline;
+import proto.task.types.Event;
+import proto.task.types.Todo;
 
 import java.time.format.DateTimeFormatter;
 
