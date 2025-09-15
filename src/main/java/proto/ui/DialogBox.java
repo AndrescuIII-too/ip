@@ -24,7 +24,13 @@ public class DialogBox extends HBox {
     @FXML
     private ImageView displayPicture;
 
-    private DialogBox(String text, Image img) {
+    public enum Type {
+        DEFAULT,
+        ERROR,
+        LIST,
+    }
+
+    private DialogBox(String text, Image img, Type type) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(MainWindow.class.getResource("/view/DialogBox.fxml"));
             fxmlLoader.setController(this);
@@ -36,10 +42,16 @@ public class DialogBox extends HBox {
 
         dialog.setText(text);
         displayPicture.setImage(img);
+
+        switch (type) {
+        case ERROR -> dialog.getStyleClass().add("error-label");
+        case LIST -> dialog.getStyleClass().add("list-label");
+        default -> {}
+        }
     }
 
-    private static final Image userImage = new Image(DialogBox.class.getResourceAsStream("/images/DaUser.png"));
-    private static final Image protoImage = new Image(DialogBox.class.getResourceAsStream("/images/DaDuke.png"));
+    private static final Image userImage = new Image(DialogBox.class.getResourceAsStream("/images/niko.png"));
+    private static final Image protoImage = new Image(DialogBox.class.getResourceAsStream("/images/proto.png"));
 
     /**
      * Flips the dialog box such that the ImageView is on the left and text on the right.
@@ -49,16 +61,19 @@ public class DialogBox extends HBox {
         Collections.reverse(tmp);
         getChildren().setAll(tmp);
         setAlignment(Pos.TOP_LEFT);
-        dialog.getStyleClass().add("reply-label");
     }
 
     public static DialogBox getUserDialog(String text) {
-        return new DialogBox(text, DialogBox.userImage);
+        return new DialogBox(text, DialogBox.userImage, Type.DEFAULT);
+    }
+
+    public static DialogBox getProtoDialog(String text, Type type) {
+        DialogBox db = new DialogBox(text, DialogBox.protoImage, type);
+        db.flip();
+        return db;
     }
 
     public static DialogBox getProtoDialog(String text) {
-        DialogBox db = new DialogBox(text, DialogBox.protoImage);
-        db.flip();
-        return db;
+        return DialogBox.getProtoDialog(text, Type.DEFAULT);
     }
 }

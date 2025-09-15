@@ -1,29 +1,28 @@
 @import "base.css"
 
 .label {
-    -fx-background-color: derive(main-color, -0.2);
-    -fx-border-color: second-color;
-    -fx-border-width: 2px;
-    -fx-background-radius: 14px;
-    -fx-border-radius: 12px;
+    -fx-border-image-source: url(../images/dialog-box-border.png);
+    -fx-border-image-slice: 11;
+    -fx-border-image-repeat: stretch;
+    -fx-border-image-width: 11;
+
+    -fx-background-color: rgba(100%, 100%, 100%, 0.15);
+    -fx-background-radius: 10;
+
     -fx-text-fill: white;
-    -fx-font: 16px "Terminus (TTF)";
+    -fx-font: 18px "Terminus (TTF)";
 }
 
-.reply-label {
-    -fx-background-radius: 1em 1em 1em 0;
-    -fx-border-radius: 1em 1em 1em 0;
+.error-label {
+    -fx-border-image-source: url(../images/dialog-box-border-error.png);
+}
+
+.list-label {
+    -fx-border-image-source: url(../images/dialog-box-border-list.png);
 }
 
 #displayPicture {
     /* Shadow effect on image. */
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 5, 5);
-
-    /* Change size of image. */
-    -fx-scale-x: 1;
-    -fx-scale-y: 1;
-
-    /* Rotate image clockwise by degrees. */
-    -fx-rotate: 0;
+    -fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 0.2), 4, 0.5, 5, 5);
 }
 

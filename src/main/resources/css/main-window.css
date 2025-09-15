@@ -1,25 +1,42 @@
 @import "base.css"
 
+.root{
+    -fx-background-color: linear-gradient(to bottom, derive(color-1, -0.4), derive(color-1, -0.6));
+}
+
 .text-field {
-    -fx-background-color: derive(main-color, -0.4);
+    -fx-background-color: derive(color-1, -0.4);
+    -fx-border-color: derive(color-1, 0.4);
+    -fx-border-width: 2px;
     -fx-font: 20px "Terminus (TTF)";
     -fx-text-fill: white;
 }
 
+.text-field:focused {
+    -fx-background-color: derive(color-1, -0.2);
+}
+
 .button {
-    -fx-background-color: main-color;
+    -fx-background-color: derive(color-2, -0.5);
+    -fx-border-color: derive(color-3, -0.2);
+    -fx-border-width: 2px;
     -fx-font: bold 20px "Terminus (TTF)";
     -fx-text-fill: white;
 }
 
+.button:hover,
+.button:focused {
+    -fx-background-color: derive(color-2, -0.2);
+    -fx-border-color: color-3;
+}
+
 .button:hover {
-    -fx-background-color:cyan;
-    -fx-font-size: 18px;
+    -fx-cursor: hand;
 }
 
 .button:pressed {
-    -fx-background-color:orange;
-    -fx-font-size: 20px;
+    -fx-background-color: derive(color-2, 0.4);
+    -fx-border-color: color-3;
 }
 
 .scroll-pane,
@@ -29,11 +46,11 @@
 
 .scroll-bar {
     -fx-font-size: 10px;  /* Change width of scroll bar. */
-    -fx-background-color: main-color;
+    -fx-background-color: derive(color-2, -0.4);
 }
 
 .scroll-bar .thumb {
-    -fx-background-color: second-color;
+    -fx-background-color: color-3;
     -fx-background-radius: 1em;
 }
 

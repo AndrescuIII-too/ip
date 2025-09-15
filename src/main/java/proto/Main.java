@@ -20,7 +20,9 @@ public class Main extends Application {
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
             stage.setScene(scene);
-            fxmlLoader.<MainWindow>getController().setInstance(proto);  // inject the Duke instance
+            stage.setMinHeight(200);
+            stage.setMinWidth(400);
+            fxmlLoader.<MainWindow>getController().setInstance(proto);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

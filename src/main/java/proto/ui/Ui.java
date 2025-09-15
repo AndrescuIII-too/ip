@@ -39,37 +39,43 @@ public class Ui {
 
     public DialogBox showLoadingError(IOException e) {
         return DialogBox.getProtoDialog(
-                "There was an error loading the file: " + e.getMessage()
+                "There was an error loading the file: " + e.getMessage(),
+                DialogBox.Type.ERROR
         );
     }
 
     public DialogBox showSavingError(IOException e) {
         return DialogBox.getProtoDialog(
-                "There was an error saving the file: " + e.getMessage()
+                "There was an error saving the file: " + e.getMessage(),
+                DialogBox.Type.ERROR
         );
     }
 
     public DialogBox showIndexError(int index) {
         return DialogBox.getProtoDialog(
-                "Task index " + index + " out of bounds"
+                "Task index " + index + " out of bounds",
+                DialogBox.Type.ERROR
         );
     }
 
     public DialogBox showDateParseError(String text) {
         return DialogBox.getProtoDialog(
-                "Trouble parsing date argument: " + text
+                "Trouble parsing date argument: " + text,
+                DialogBox.Type.ERROR
         );
     }
 
     public DialogBox showProtoException(ProtoException e) {
         return DialogBox.getProtoDialog(
-                e.getMessage()
+                e.getMessage(),
+                DialogBox.Type.ERROR
         );
     }
 
     public DialogBox showEmptyDescriptionError() {
         return DialogBox.getProtoDialog(
-                "Description cannot be empty"
+                "Description cannot be empty",
+                DialogBox.Type.ERROR
         );
     }
 
@@ -96,13 +102,15 @@ public class Ui {
     public DialogBox showTaskList(TaskList taskList) {
         return DialogBox.getProtoDialog(
                 "Here are the tasks in your list:\n" +
-                    taskList.getDisplayString()
+                    taskList.getDisplayString(),
+                DialogBox.Type.LIST
         );
     }
     public DialogBox showFindResults(List<IndexedTask> indexedTasks) {
         return DialogBox.getProtoDialog(
                 "Here are the matching tasks in your list:\n" +
-                    TaskList.getDisplayString(indexedTasks)
+                    TaskList.getDisplayString(indexedTasks),
+                DialogBox.Type.LIST
         );
     }
 

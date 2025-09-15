@@ -1,21 +1,21 @@
 @font-face {
-    src: url('terminus-ttf-4.49.3/TerminusTTF-4.49.3.ttf');
+    src: url('../fonts/terminus-ttf-4.49.3/TerminusTTF-4.49.3.ttf');
 }
 
 @font-face {
-    src: url('terminus-ttf-4.49.3/TerminusTTF-Bold-4.49.3.ttf');
+    src: url('../fonts/terminus-ttf-4.49.3/TerminusTTF-Bold-4.49.3.ttf');
 }
 
 @font-face {
-    src: url('terminus-ttf-4.49.3/TerminusTTF-Bold-Italic-4.49.3.ttf');
+    src: url('../fonts/terminus-ttf-4.49.3/TerminusTTF-Bold-Italic-4.49.3.ttf');
 }
 
 @font-face {
-    src: url('terminus-ttf-4.49.3/TerminusTTF-Italic-4.49.3.ttf');
+    src: url('../fonts/terminus-ttf-4.49.3/TerminusTTF-Italic-4.49.3.ttf');
 }
 
 .root {
-    main-color: #541b70;
-    second-color: #ffd238;
-    -fx-background-color: derive(main-color, -0.6);
+    color-1: #541b70;
+    color-2: #b34f1a;
+    color-3: #ffde29;
 }
