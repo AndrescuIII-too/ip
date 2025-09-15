@@ -50,6 +50,12 @@ public class TaskList {
         return sb.toString();
     }
 
+    /**
+     * Finds and returns tasks with a description containing the given text.
+     *
+     * @param text Text to match against.
+     * @return List of tasks that successfully matched.
+     */
     public List<IndexedTask> find(String text) {
         Pattern rx = Pattern.compile(Pattern.quote(text), Pattern.CASE_INSENSITIVE);
         List<IndexedTask> matchedTasks = new ArrayList<>();

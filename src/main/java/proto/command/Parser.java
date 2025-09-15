@@ -49,7 +49,7 @@ public class Parser {
         while (true) {
             Matcher match = RX_PARAMETER.matcher(input);
             if (!match.find()) {
-                return parameters; // Should be unreachable
+                throw new AssertionError(); // Should be unreachable
             }
             parameters.add(new Parameter(match.group(1), match.group(2)));
             input = input.substring(match.end());
@@ -93,9 +93,17 @@ public class Parser {
         return fields;
     }
 
+    /**
+     * Parses command from input string.
+     *
+     * @param input String to be parsed.
+     * @return Executable command.
+     */
     public static Command parseCommand(String input) {
         Matcher match = RX_ARGUMENTS.matcher(input);
-        match.find();
+        if (!match.find()) {
+            throw new AssertionError(); // Should be unreachable
+        }
         return Parser.resolve(match.group(1), match.group(2), Parser.parseParameters(match.group(3)));
     }
 
@@ -108,7 +116,7 @@ public class Parser {
         }
     }
 
-    public static Command resolve(String name, String body, List<Parameter> parameters) {
+    private static Command resolve(String name, String body, List<Parameter> parameters) {
         return switch (name) {
         case "bye" -> new Exit();
         case "mark" -> new MarkTask(body);

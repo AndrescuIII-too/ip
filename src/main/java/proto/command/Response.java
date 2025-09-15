@@ -2,6 +2,9 @@ package proto.command;
 
 import proto.ui.DialogBox;
 
+/**
+ * A class representing the responses that Proto can give.
+ */
 public class Response {
     public enum Type {
         DIALOG,
@@ -28,6 +31,11 @@ public class Response {
         return this.dialogBox;
     }
 
+    /**
+     * Returns a response to exit the application.
+     *
+     * @return Response to exit.
+     */
     public static Response exit() {
         return Response.RESPONSE_EXIT;
     }
