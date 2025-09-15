@@ -18,12 +18,16 @@ public class Main extends Application {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(Proto.class.getResource("/view/MainWindow.fxml"));
             AnchorPane ap = fxmlLoader.load();
+
             Scene scene = new Scene(ap);
             stage.setScene(scene);
             stage.setMinHeight(200);
             stage.setMinWidth(400);
-            fxmlLoader.<MainWindow>getController().setInstance(proto);
-            fxmlLoader.<MainWindow>getController().showInitialResponses();
+
+            MainWindow mainWindow = fxmlLoader.getController();
+            mainWindow.setInstance(proto);
+            mainWindow.showInitialResponses();
+
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
