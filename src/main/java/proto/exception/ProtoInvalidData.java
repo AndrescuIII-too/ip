@@ -9,7 +9,11 @@ public class ProtoInvalidData extends ProtoException {
 
     @Override
     public String getMessage() {
-        return "[Line #" + this.errorIndex + ": " + super.getMessage() + " ]";
+        if (errorIndex != -1) {
+            return "[Line #" + this.errorIndex + ": " + super.getMessage() + " ]";
+        } else {
+            return "[Error: " + super.getMessage() + " ]";
+        }
     }
 
     public void setErrorIndex(int errorIndex) {

@@ -9,15 +9,19 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 
 public class Storage {
-    private final File file;
+    private final Config config;
 
-    public Storage(File file) {
-        this.file = file;
+    public Storage(Config config) {
+        this.config = config;
     }
 
+    private File getSaveFile() {
+        return this.config.getSavePath().toFile();
+    }
 
     /**
      * Save task list to file.
@@ -26,7 +30,7 @@ public class Storage {
      * @throws IOException If there was an error writing to the specified file.
      */
     public void save(TaskList taskList) throws IOException {
-        try (FileWriter writer = new FileWriter(this.file)) {
+        try (FileWriter writer = new FileWriter(this.getSaveFile())) {
             for (Task task : taskList.getTasks()) {
                 writer.write(task.serialize() + "\n");
             }
@@ -36,18 +40,27 @@ public class Storage {
     /**
      * Load task list from file.
      *
+     * @param path Path to save file.
+     * @param force Whether to create the file if it does not exist.
      * @return Task list.
      * @throws IOException      If there was an error reading from the specified file.
      * @throws ProtoInvalidData If there was a deserialization error.
      */
-    public TaskList load() throws IOException, ProtoInvalidData {
+    public TaskList loadFrom(Path path, boolean force) throws IOException, ProtoInvalidData {
         ArrayList<Task> tasks = new ArrayList<>();
+        File file = path.toFile();
 
         // Ensure path and file exists
-        this.file.getParentFile().mkdirs();
-        this.file.createNewFile();
+        if (force && !file.exists()) {
+            file.getParentFile().mkdirs();
+            file.createNewFile();
+        } else if (!file.exists()) {
+            throw new ProtoInvalidData("cannot find file " + path.toString());
+        } else if (file.isDirectory()) {
+            throw new ProtoInvalidData("path " + path.toString() + " is a directory");
+        }
 
-        try (FileReader reader = new FileReader(this.file)) {
+        try (FileReader reader = new FileReader(file)) {
             BufferedReader readStream = new BufferedReader(reader);
             String line;
             int lineNumber = 0;
@@ -62,6 +75,8 @@ public class Storage {
                 }
             }
 
+            // Set config save path if no errors were encountered
+            this.config.setSavePath(path);
             return new TaskList(tasks);
         }
     }

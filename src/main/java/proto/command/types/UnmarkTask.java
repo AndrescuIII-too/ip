@@ -30,7 +30,7 @@ public class UnmarkTask extends Command {
 
         List<Response> responses = new ArrayList<>();
         try {
-            Task task = context.taskList.get(index - 1);
+            Task task = context.getTaskList().get(index - 1);
             task.markUndone();
             responses.add(
                     new Response(context.ui.showTaskUndone(task))

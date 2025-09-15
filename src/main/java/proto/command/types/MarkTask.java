@@ -30,7 +30,7 @@ public class MarkTask extends Command {
 
         List<Response> responses = new ArrayList<>();
         try {
-            Task task = context.taskList.get(index - 1);
+            Task task = context.getTaskList().get(index - 1);
             task.markAsDone();
             responses.add(
                     new Response(context.ui.showTaskDone(task))
