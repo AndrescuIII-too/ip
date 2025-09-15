@@ -53,9 +53,9 @@ public class AddTaskEvent extends Command {
             );
         }
 
-        context.taskList.add(task);
+        context.getTaskList().add(task);
         ArrayList<Response> responses = new ArrayList<>(List.of(
-                new Response(context.ui.showTaskAdded(task, context.taskList))
+                new Response(context.ui.showTaskAdded(task, context.getTaskList()))
         ));
 
         responses.addAll(context.saveTaskList());

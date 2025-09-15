@@ -82,7 +82,7 @@ public class Proto {
      * @return List of responses.
      */
     public List<Response> getResponses(String input) {
-        assert this.context.taskList != null;
+        assert this.context.getTaskList() != null;
         Command command = Parser.parseCommand(input);
         return command.execute(this.context);
     }

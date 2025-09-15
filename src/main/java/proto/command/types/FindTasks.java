@@ -16,7 +16,7 @@ public class FindTasks extends Command {
 
     @Override
     public List<Response> execute(Context context) {
-        List<IndexedTask> matchedTasks = context.taskList.find(this.query);
+        List<IndexedTask> matchedTasks = context.getTaskList().find(this.query);
 
         if (matchedTasks.isEmpty()) {
             return List.of(

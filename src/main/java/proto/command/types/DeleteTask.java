@@ -30,7 +30,7 @@ public class DeleteTask extends Command {
 
         List<Response> responses = new ArrayList<>();
         try {
-            Task task = context.taskList.remove(index - 1);
+            Task task = context.getTaskList().remove(index - 1);
             responses.add(
                     new Response(context.ui.showTaskRemoved(task))
             );

@@ -51,6 +51,12 @@ public class Ui {
         );
     }
 
+    public DialogBox showLoadingSuccess() {
+        return DialogBox.getProtoDialog(
+                "[Your tasks were loaded successfully.]"
+        );
+    }
+
     public DialogBox showSavingError(IOException e) {
         return DialogBox.getProtoDialog(
                 "[There was an error when saving your data: " + e.getMessage() + " ]",

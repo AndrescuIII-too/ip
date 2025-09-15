@@ -60,8 +60,6 @@ public class Storage {
             throw new ProtoInvalidData("path " + path.toString() + " is a directory");
         }
 
-        this.config.setSavePath(path);
-
         try (FileReader reader = new FileReader(file)) {
             BufferedReader readStream = new BufferedReader(reader);
             String line;
@@ -77,6 +75,8 @@ public class Storage {
                 }
             }
 
+            // Set config save path if no errors were encountered
+            this.config.setSavePath(path);
             return new TaskList(tasks);
         }
     }

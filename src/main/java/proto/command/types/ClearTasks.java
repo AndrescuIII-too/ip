@@ -10,7 +10,7 @@ import proto.command.Response;
 public class ClearTasks extends Command {
     @Override
     public List<Response> execute(Context context) {
-        context.taskList.clear();
+        context.getTaskList().clear();
 
         ArrayList<Response> responses = new ArrayList<>(List.of(
                 new Response(context.ui.showTaskListCleared())
