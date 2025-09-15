@@ -36,11 +36,11 @@ public class Event extends Task {
     }
 
     public String getStartTimeString() {
-        return this.startTime.format(Task.dateTimeFormatter);
+        return this.startTime.format(Task.displayFormatter);
     }
 
     public String getEndTimeString() {
-        return this.endTime.format(Task.dateTimeFormatter);
+        return this.endTime.format(Task.displayFormatter);
     }
 
     public String serialize() {

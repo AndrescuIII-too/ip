@@ -33,7 +33,7 @@ public class Deadline extends Task {
     }
 
     public String getEndTimeString() {
-        return this.endTime.format(Task.dateTimeFormatter);
+        return this.endTime.format(Task.displayFormatter);
     }
 
     public String serialize() {

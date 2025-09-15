@@ -10,7 +10,8 @@ import java.time.format.DateTimeFormatter;
 public abstract class Task {
     protected final String description;
     protected boolean isDone = false;
-    protected static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MMM dd yyyy");
+    protected static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_DATE;
+    protected static final DateTimeFormatter displayFormatter = DateTimeFormatter.ofPattern("MMM dd yyyy");
 
     public Task(String description) {
         this.description = description;
