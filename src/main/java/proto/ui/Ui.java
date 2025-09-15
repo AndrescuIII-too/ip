@@ -10,57 +10,64 @@ import java.util.List;
 
 public class Ui {
 
-//    public DialogBox showWelcome() {
-//        System.out.println("Hello! I'm Proto\n" +
-//                "What can I do for you?"
-//        );
-//    }
+    public DialogBox showWelcome() {
+        return DialogBox.getProtoDialog(
+                "[Hi.]\n" +
+                "[What can I do for you today.]"
+        );
+    }
+
+    public DialogBox showFatalExit() {
+        return DialogBox.getProtoDialog(
+                "[Press any button to exit.]"
+        );
+    }
 
     public DialogBox showTaskDone(Task task) {
         return DialogBox.getProtoDialog(
-                "Nice! I've marked this task as done:\n" +
+                "[I have marked this task from your list as done.]\n" +
                 " " + task.getDisplayString()
         );
     }
 
     public DialogBox showTaskUndone(Task task) {
         return DialogBox.getProtoDialog(
-                "OK, I've marked this task as not done yet:\n" +
+                "[I have unmarked this task from your list.]\n" +
                 " " + task.getDisplayString()
         );
     }
 
     public DialogBox showTaskRemoved(Task task) {
         return DialogBox.getProtoDialog(
-                "Noted! I've removed this task:\n" +
+                "[I have removed this task from your list.]\n" +
                 " " + task.getDisplayString()
         );
     }
 
     public DialogBox showLoadingError(IOException e) {
         return DialogBox.getProtoDialog(
-                "There was an error loading the file: " + e.getMessage(),
+                "[There was an error when loading your save data: " + e.getMessage() + " ]",
                 DialogBox.Type.ERROR
         );
     }
 
     public DialogBox showSavingError(IOException e) {
         return DialogBox.getProtoDialog(
-                "There was an error saving the file: " + e.getMessage(),
+                "[There was an error when saving your data: " + e.getMessage() + " ]",
                 DialogBox.Type.ERROR
         );
     }
 
     public DialogBox showIndexError(int index) {
         return DialogBox.getProtoDialog(
-                "Task index " + index + " out of bounds",
+                "[You do not have a task with index " + index + "in your list.]",
                 DialogBox.Type.ERROR
         );
     }
 
     public DialogBox showDateParseError(String text) {
         return DialogBox.getProtoDialog(
-                "Trouble parsing date argument: " + text,
+                "[I had trouble understanding this date: " + text + " ]",
                 DialogBox.Type.ERROR
         );
     }
@@ -74,41 +81,41 @@ public class Ui {
 
     public DialogBox showEmptyDescriptionError() {
         return DialogBox.getProtoDialog(
-                "Description cannot be empty",
+                "[I can't add a task without a description.]",
                 DialogBox.Type.ERROR
         );
     }
 
     public DialogBox showTaskAdded(Task task, TaskList taskList) {
         return DialogBox.getProtoDialog(
-                "Got it. I've added this task:\n" +
+                "[I have added this task to your list.]\n" +
                 " " + task.getDisplayString() + "\n" +
-                "Now you have " + taskList.size() + " tasks in the list."
+                "[Now you have " + taskList.size() + " tasks in the list.]"
         );
     }
 
     public DialogBox showTaskListEmpty() {
         return DialogBox.getProtoDialog(
-                "You don't have any tasks in your list."
+                "[There are no tasks in your list.]"
         );
     }
 
     public DialogBox showFindNothing(String text) {
         return DialogBox.getProtoDialog(
-                "No tasks with description \"" + text + "\" found"
+                "[I didn't find any tasks with the description containing \"" + text + "\".]"
         );
     }
 
     public DialogBox showTaskList(TaskList taskList) {
         return DialogBox.getProtoDialog(
-                "Here are the tasks in your list:\n" +
+                "[Here are the tasks in your list.]\n" +
                     taskList.getDisplayString(),
                 DialogBox.Type.LIST
         );
     }
     public DialogBox showFindResults(List<IndexedTask> indexedTasks) {
         return DialogBox.getProtoDialog(
-                "Here are the matching tasks in your list:\n" +
+                "[Here are the matching tasks in your list.]\n" +
                     TaskList.getDisplayString(indexedTasks),
                 DialogBox.Type.LIST
         );
@@ -116,7 +123,7 @@ public class Ui {
 
     public DialogBox showTaskListCleared() {
         return DialogBox.getProtoDialog(
-                "Cleared all tasks from your list!"
+                "[I have cleared your task list.]"
         );
     }
 }

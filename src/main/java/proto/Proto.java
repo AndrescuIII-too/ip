@@ -12,16 +12,19 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Proto {
     private static final Path DEFAULT_PATH = Paths.get(".", "data", "tasks.txt");
     private final Context context;
     private Status status;
+    public final List<Response> initialResponses;
 
-    private Proto(Context context, Status status) {
+    private Proto(Context context, Status status, List<Response> initialResponses) {
         this.context = context;
         this.status = status;
+        this.initialResponses = initialResponses;
     }
 
     public Status getStatus() {
@@ -37,29 +40,41 @@ public class Proto {
         Ui ui = new Ui();
         Storage storage = new Storage(file);
         TaskList taskList = null;
-        Status status = Status.OK;
+        Status status;
+        ArrayList<Response> initialResponses = new ArrayList<>();
 
         try {
             taskList = storage.load();
+            initialResponses.add(
+                    new Response(ui.showWelcome())
+            );
+            status = Status.OK;
         } catch (IOException e) {
-//            ui.showLoadingError(e);
-            e.printStackTrace();
+            initialResponses.add(
+                    new Response(ui.showLoadingError(e))
+            );
             status = Status.FATAL;
         } catch (ProtoInvalidData e) {
-//            ui.showProtoException(e);
-            e.printStackTrace();
+            initialResponses.add(
+                    new Response(ui.showProtoException(e))
+            );
             status = Status.FATAL;
         }
 
+        if (status == Status.FATAL) {
+            initialResponses.add(
+                    new Response(ui.showFatalExit())
+            );
+        }
         Context context = new Context(ui, storage, taskList);
-        return new Proto(context, status);
+        return new Proto(context, status, initialResponses);
     }
 
     public static Proto initialize() {
         return Proto.initialize(Proto.DEFAULT_PATH.toFile());
     }
 
-    public List<Response> getResponse(String input) {
+    public List<Response> getResponses(String input) {
         Command command = Parser.parseCommand(input);
         return command.execute(this.context);
     }

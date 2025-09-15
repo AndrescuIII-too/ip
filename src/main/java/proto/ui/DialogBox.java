@@ -40,12 +40,12 @@ public class DialogBox extends HBox {
             e.printStackTrace();
         }
 
-        dialog.setText(text);
-        displayPicture.setImage(img);
+        this.dialog.setText(text);
+        this.displayPicture.setImage(img);
 
         switch (type) {
-        case ERROR -> dialog.getStyleClass().add("error-label");
-        case LIST -> dialog.getStyleClass().add("list-label");
+        case ERROR -> this.dialog.getStyleClass().add("error-label");
+        case LIST -> this.dialog.getStyleClass().add("list-label");
         default -> {}
         }
     }

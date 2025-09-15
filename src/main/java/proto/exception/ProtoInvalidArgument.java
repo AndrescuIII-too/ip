@@ -2,6 +2,6 @@ package proto.exception;
 
 public class ProtoInvalidArgument extends ProtoException {
     public ProtoInvalidArgument(String errorDescription) {
-        super("Invalid argument: " + errorDescription);
+        super("[Invalid argument: " + errorDescription + " ]");
     }
 }
