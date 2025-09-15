@@ -15,7 +15,7 @@ public class ListTasks extends Command {
             );
         } else {
             return List.of(
-                    new Response(context.ui.showTaskList(context.taskList.getTasks()))
+                    new Response(context.ui.showTaskList(context.taskList))
             );
         }
     }

@@ -5,6 +5,7 @@ import java.util.List;
 import proto.command.Command;
 import proto.command.Context;
 import proto.command.Response;
+import proto.task.IndexedTask;
 import proto.task.Task;
 
 public class FindTasks extends Command {
@@ -15,7 +16,7 @@ public class FindTasks extends Command {
 
     @Override
     public List<Response> execute(Context context) {
-        List<Task> matchedTasks = context.taskList.find(this.query);
+        List<IndexedTask> matchedTasks = context.taskList.find(this.query);
 
         if (matchedTasks.isEmpty()) {
             return List.of(

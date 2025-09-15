@@ -1,6 +1,7 @@
 package proto.ui;
 
 import proto.exception.ProtoException;
+import proto.task.IndexedTask;
 import proto.task.Task;
 import proto.task.TaskList;
 
@@ -92,16 +93,16 @@ public class Ui {
         );
     }
 
-    public DialogBox showTaskList(List<Task> tasks) {
+    public DialogBox showTaskList(TaskList taskList) {
         return DialogBox.getProtoDialog(
                 "Here are the tasks in your list:\n" +
-                    TaskList.getDisplayString(tasks)
+                    taskList.getDisplayString()
         );
     }
-    public DialogBox showFindResults(List<Task> tasks) {
+    public DialogBox showFindResults(List<IndexedTask> indexedTasks) {
         return DialogBox.getProtoDialog(
                 "Here are the matching tasks in your list:\n" +
-                    TaskList.getDisplayString(tasks)
+                    TaskList.getDisplayString(indexedTasks)
         );
     }
 
