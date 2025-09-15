@@ -16,15 +16,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Proto {
-    private static final Path DEFAULT_PATH = Paths.get(".", "data", "tasks.txt");
+    protected static final Path DATA_PATH = Paths.get(".", "data");
     private final Context context;
+    private final Config config;
     private Status status;
     public final List<Response> initialResponses;
 
-    private Proto(Context context, Status status, List<Response> initialResponses) {
+    private Proto(Context context, Config config, Status status, List<Response> initialResponses) {
         this.context = context;
+        this.config = config;
         this.status = status;
         this.initialResponses = initialResponses;
+    }
+
+    private static Proto fatalInit(Ui ui, List<Response> initialResponses) {
+        initialResponses.add(
+                new Response(ui.showFatalExit())
+        );
+        Context context = new Context(ui, null, null);
+        return new Proto(context, null, Status.FATAL, initialResponses);
     }
 
     public Status getStatus() {
@@ -36,42 +46,32 @@ public class Proto {
         FATAL,
     }
 
-    public static Proto initialize(File file) {
+    public static Proto initialize() {
         Ui ui = new Ui();
-        Storage storage = new Storage(file);
-        TaskList taskList = null;
-        Status status;
         ArrayList<Response> initialResponses = new ArrayList<>();
 
         try {
-            taskList = storage.load();
+            Config config = Config.initialize();
+            Storage storage = new Storage(config);
+            TaskList taskList = storage.loadFrom(config.getSavePath(), true);
+
             initialResponses.add(
                     new Response(ui.showWelcome())
             );
-            status = Status.OK;
+
+            Context context = new Context(ui, storage, taskList);
+            return new Proto(context, config, Status.OK, initialResponses);
         } catch (IOException e) {
             initialResponses.add(
                     new Response(ui.showLoadingError(e))
             );
-            status = Status.FATAL;
+            return Proto.fatalInit(ui, initialResponses);
         } catch (ProtoInvalidData e) {
             initialResponses.add(
                     new Response(ui.showProtoException(e))
             );
-            status = Status.FATAL;
+            return Proto.fatalInit(ui, initialResponses);
         }
-
-        if (status == Status.FATAL) {
-            initialResponses.add(
-                    new Response(ui.showFatalExit())
-            );
-        }
-        Context context = new Context(ui, storage, taskList);
-        return new Proto(context, status, initialResponses);
-    }
-
-    public static Proto initialize() {
-        return Proto.initialize(Proto.DEFAULT_PATH.toFile());
     }
 
     /**
