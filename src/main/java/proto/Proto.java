@@ -74,7 +74,15 @@ public class Proto {
         return Proto.initialize(Proto.DEFAULT_PATH.toFile());
     }
 
+    /**
+     * Returns responses to user input.
+     * Should not be called when Proto status is FATAL.
+     *
+     * @param input User string input.
+     * @return List of responses.
+     */
     public List<Response> getResponses(String input) {
+        assert this.context.taskList != null;
         Command command = Parser.parseCommand(input);
         return command.execute(this.context);
     }

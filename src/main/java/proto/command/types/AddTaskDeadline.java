@@ -42,6 +42,7 @@ public class AddTaskDeadline extends Command {
             );
         }
 
+        assert fields.containsKey("by");
         Task task;
         try {
             task = new Deadline(this.description, fields.get("by"));

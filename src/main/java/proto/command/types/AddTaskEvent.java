@@ -42,6 +42,8 @@ public class AddTaskEvent extends Command {
             );
         }
 
+        assert fields.containsKey("by");
+        assert fields.containsKey("to");
         Task task;
         try {
             task = new Event(this.description, fields.get("by"), fields.get("to"));
