@@ -44,18 +44,18 @@ public class Parser {
 
         if (input == null) {
             return parameters;
-        } else {
-            while (true) {
-                Matcher match = RX_PARAMETER.matcher(input);
-                if (!match.find()) {
-                    throw new AssertionError(); // Should be unreachable
-                }
-                parameters.add(new Parameter(match.group(1), match.group(2)));
-                input = input.substring(match.end());
+        }
 
-                if (match.hitEnd()) {
-                    return parameters;
-                }
+        while (true) {
+            Matcher match = RX_PARAMETER.matcher(input);
+            if (!match.find()) {
+                throw new AssertionError(); // Should be unreachable
+            }
+            parameters.add(new Parameter(match.group(1), match.group(2)));
+            input = input.substring(match.end());
+
+            if (match.hitEnd()) {
+                return parameters;
             }
         }
     }

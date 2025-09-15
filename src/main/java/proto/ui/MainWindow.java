@@ -49,7 +49,8 @@ public class MainWindow extends AnchorPane {
         }
 
         String input = this.userInput.getText();
-        this.dialogContainer.getChildren().add(DialogBox.getUserDialog(input));
+        DialogBox userDialog = DialogBox.getUserDialog(input);
+        this.dialogContainer.getChildren().add(userDialog);
 
         List<Response> responses = this.proto.getResponses(input);
         this.flushResponses(responses);

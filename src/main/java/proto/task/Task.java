@@ -53,20 +53,12 @@ public abstract class Task {
      */
     public static Task deserialize(String data) throws ProtoInvalidData {
         char type;
-        switch (type = data.charAt(0)) {
-        case 'T' -> {
-            return Todo.deserialize(data);
-        }
-        case 'D' -> {
-            return Deadline.deserialize(data);
-        }
-        case 'E' -> {
-            return Event.deserialize(data);
-        }
-        default -> {
-            throw new ProtoInvalidData("Unknown task type \"" + type + "\"");
-        }
-        }
+        return switch (type = data.charAt(0)) {
+        case 'T' -> Todo.deserialize(data);
+        case 'D' -> Deadline.deserialize(data);
+        case 'E' -> Event.deserialize(data);
+        default -> throw new ProtoInvalidData("Unknown task type \"" + type + "\"");
+        };
     }
 
     /**

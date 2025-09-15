@@ -45,7 +45,8 @@ public class TaskList {
                     .append(task.getDisplayString())
                     .append("\n");
         }
-        sb.deleteCharAt(sb.length() - 1);
+
+        sb.deleteCharAt(sb.length() - 1); // Strip trailing space
         return sb.toString();
     }
 
