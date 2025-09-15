@@ -17,15 +17,30 @@ public class TaskList {
     }
 
     /**
-     * Returns task list as string to display in ui.
+     * Returns entire task list as string to display in ui.
      *
      * @return Task list as string.
      */
-    public static String getDisplayString(List<Task> tasks) {
+    public String getDisplayString() {
+        List<IndexedTask> indexedTasks = new ArrayList<>();
+        for (int i = 0; i < this.tasks.size(); i++) {
+            indexedTasks.add(new IndexedTask(i + 1, this.tasks.get(i)));
+        }
+        return TaskList.getDisplayString(indexedTasks);
+    }
+
+    /**
+     * Returns task list with indices as string to display in ui.
+     *
+     * @return Task list as string.
+     */
+    public static String getDisplayString(List<IndexedTask> indexedTasks) {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < tasks.size(); i++) {
-            Task task = tasks.get(i);
-            sb.append(i + 1)
+        for (IndexedTask indexedTask: indexedTasks) {
+            int index = indexedTask.index();
+            Task task = indexedTask.task();
+            sb.append(index < 10 ? " " : "")
+                    .append(index)
                     .append(".")
                     .append(task.getDisplayString())
                     .append("\n");
@@ -34,13 +49,14 @@ public class TaskList {
         return sb.toString();
     }
 
-    public List<Task> find(String text) {
+    public List<IndexedTask> find(String text) {
         Pattern rx = Pattern.compile(Pattern.quote(text), Pattern.CASE_INSENSITIVE);
-        List<Task> matchedTasks = new ArrayList<>();
+        List<IndexedTask> matchedTasks = new ArrayList<>();
 
-        for (Task task : this.tasks) {
+        for (int i = 0; i < this.tasks.size(); i++) {
+            Task task = this.tasks.get(i);
             if (rx.matcher(task.description).find()) {
-                matchedTasks.add(task);
+                matchedTasks.add(new IndexedTask(i + 1, task));
             }
         }
 

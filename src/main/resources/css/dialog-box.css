@@ -1,0 +1,28 @@
+@import "base.css"
+
+.label {
+    -fx-border-image-source: url(../images/dialog-box-border.png);
+    -fx-border-image-slice: 11;
+    -fx-border-image-repeat: stretch;
+    -fx-border-image-width: 11;
+
+    -fx-background-color: rgba(100%, 100%, 100%, 0.15);
+    -fx-background-radius: 10;
+
+    -fx-text-fill: white;
+    -fx-font: 18px "Terminus (TTF)";
+}
+
+.error-label {
+    -fx-border-image-source: url(../images/dialog-box-border-error.png);
+}
+
+.list-label {
+    -fx-border-image-source: url(../images/dialog-box-border-list.png);
+}
+
+#displayPicture {
+    /* Shadow effect on image. */
+    -fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 0.2), 4, 0.5, 5, 5);
+}
+

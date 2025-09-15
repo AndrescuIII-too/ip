@@ -1,5 +1,16 @@
 package proto.command;
 
+import proto.command.types.AddTaskDeadline;
+import proto.command.types.AddTaskEvent;
+import proto.command.types.AddTaskTodo;
+import proto.command.types.ClearTasks;
+import proto.command.types.DeleteTask;
+import proto.command.types.Exit;
+import proto.command.types.FindTasks;
+import proto.command.types.ListTasks;
+import proto.command.types.MarkTask;
+import proto.command.types.Unknown;
+import proto.command.types.UnmarkTask;
 import proto.exception.ProtoDuplicateField;
 import proto.exception.ProtoEmptyField;
 import proto.exception.ProtoException;
@@ -85,7 +96,7 @@ public class Parser {
     public static Command parseCommand(String input) {
         Matcher match = RX_ARGUMENTS.matcher(input);
         match.find();
-        return new Command(match.group(1), match.group(2), Parser.parseParameters(match.group(3)));
+        return Parser.resolve(match.group(1), match.group(2), Parser.parseParameters(match.group(3)));
     }
 
     public static int parseNumber(String text) throws ProtoInvalidArgument {
@@ -95,5 +106,21 @@ public class Parser {
         } else {
             throw new ProtoInvalidArgument("expected numeric value");
         }
+    }
+
+    public static Command resolve(String name, String body, List<Parameter> parameters) {
+        return switch (name) {
+        case "bye" -> new Exit();
+        case "mark" -> new MarkTask(body);
+        case "unmark" -> new UnmarkTask(body);
+        case "delete" -> new DeleteTask(body);
+        case "todo" -> new AddTaskTodo(body);
+        case "deadline" -> new AddTaskDeadline(body, parameters);
+        case "event" -> new AddTaskEvent(body, parameters);
+        case "list" -> new ListTasks();
+        case "find" -> new FindTasks(body);
+        case "clear" -> new ClearTasks();
+        default -> new Unknown(name);
+        };
     }
 }

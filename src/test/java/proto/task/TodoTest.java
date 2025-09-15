@@ -3,6 +3,7 @@ package proto.task;
 import org.junit.jupiter.api.Test;
 
 import proto.exception.ProtoInvalidData;
+import proto.task.types.Todo;
 
 import static org.junit.jupiter.api.Assertions.*;
 

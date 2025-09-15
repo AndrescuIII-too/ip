@@ -1,0 +1,21 @@
+@font-face {
+    src: url('../fonts/terminus-ttf-4.49.3/TerminusTTF-4.49.3.ttf');
+}
+
+@font-face {
+    src: url('../fonts/terminus-ttf-4.49.3/TerminusTTF-Bold-4.49.3.ttf');
+}
+
+@font-face {
+    src: url('../fonts/terminus-ttf-4.49.3/TerminusTTF-Bold-Italic-4.49.3.ttf');
+}
+
+@font-face {
+    src: url('../fonts/terminus-ttf-4.49.3/TerminusTTF-Italic-4.49.3.ttf');
+}
+
+.root {
+    color-1: #541b70;
+    color-2: #b34f1a;
+    color-3: #ffde29;
+}
