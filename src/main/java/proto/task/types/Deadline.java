@@ -39,24 +39,28 @@ public class Deadline extends Task {
     public String serialize() {
         return this.getTaskIcon() + " | " + (this.isDone ? "1" : "0") + " | " +
                 Task.encodeString(this.description) + " | " +
-                this.getEndTimeString();
+                this.endTime.format(Task.dateTimeFormatter);
     }
 
     private static final Pattern RX_DESERIALIZE = Pattern.compile(
             "^D \\| ([01]) \\| ((?:[^|]|\\\\\\|)*) \\| ((?:[^|]|\\\\\\|)*)$");
 
 
-    public static Deadline deserialize(String data) throws ProtoInvalidData, DateTimeParseException {
+    public static Deadline deserialize(String data) throws ProtoInvalidData {
         Matcher match = RX_DESERIALIZE.matcher(data);
 
-        if (match.find()) {
+        if (!match.find()) {
+            throw new ProtoInvalidData("Error parsing deadline data");
+        }
+
+        try {
             Deadline deadline = new Deadline(
                     Task.decodeString(match.group(2)),
                     LocalDate.parse(match.group(3), Task.dateTimeFormatter));
             deadline.isDone = match.group(1).equals("1");
             return deadline;
-        } else {
-            throw new ProtoInvalidData("Error parsing deadline data");
+        } catch (DateTimeParseException e) {
+            throw new ProtoInvalidData("Error parsing datetime in deadline data: " + e.getParsedString());
         }
     }
 }

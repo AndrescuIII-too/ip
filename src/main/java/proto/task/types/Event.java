@@ -46,26 +46,30 @@ public class Event extends Task {
     public String serialize() {
         return this.getTaskIcon() + " | " + (this.isDone ? "1" : "0") + " | " +
                 Task.encodeString(this.description) + " | " +
-                this.getStartTimeString() + " | " +
-                this.getEndTimeString();
+                this.startTime.format(Task.dateTimeFormatter) + " | " +
+                this.endTime.format(Task.dateTimeFormatter);
     }
 
     private static final Pattern RX_DESERIALIZE = Pattern.compile(
             "^E \\| ([01]) \\| ((?:[^|]|\\\\\\|)*) \\| ((?:[^|]|\\\\\\|)*) \\| ((?:[^|]|\\\\\\|)*)$");
 
 
-    public static Event deserialize(String data) throws ProtoInvalidData, DateTimeParseException {
+    public static Event deserialize(String data) throws ProtoInvalidData {
         Matcher match = RX_DESERIALIZE.matcher(data);
 
-        if (match.find()) {
+        if (!match.find()) {
+            throw new ProtoInvalidData("Error parsing event data");
+        }
+
+        try {
             Event event = new Event(
                     Task.decodeString(match.group(2)),
                     LocalDate.parse(match.group(3), Task.dateTimeFormatter),
                     LocalDate.parse(match.group(4), Task.dateTimeFormatter));
             event.isDone = match.group(1).equals("1");
             return event;
-        } else {
-            throw new ProtoInvalidData("Error parsing event data");
+        } catch (DateTimeParseException e) {
+            throw new ProtoInvalidData("Error parsing datetime in event data: " + e.getParsedString());
         }
     }
 }
