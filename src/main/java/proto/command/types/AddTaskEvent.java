@@ -18,7 +18,7 @@ import proto.task.types.Event;
 public class AddTaskEvent extends Command {
     private final String description;
     private final List<Parameter> parameters;
-    private static final HashSet<String> FIELDS = new HashSet<>(List.of("by", "to"));
+    private static final HashSet<String> FIELDS = new HashSet<>(List.of("from", "to"));
 
     public AddTaskEvent(String description, List<Parameter> parameters) {
         this.description = description;
@@ -42,11 +42,11 @@ public class AddTaskEvent extends Command {
             );
         }
 
-        assert fields.containsKey("by");
+        assert fields.containsKey("from");
         assert fields.containsKey("to");
         Task task;
         try {
-            task = new Event(this.description, fields.get("by"), fields.get("to"));
+            task = new Event(this.description, fields.get("from"), fields.get("to"));
         } catch (DateTimeParseException e) {
             return List.of(
                     new Response(context.ui.showDateParseError(e.getParsedString()))
