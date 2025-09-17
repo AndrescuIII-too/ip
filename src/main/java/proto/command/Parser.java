@@ -7,6 +7,7 @@ import proto.command.types.ClearTasks;
 import proto.command.types.DeleteTask;
 import proto.command.types.Exit;
 import proto.command.types.FindTasks;
+import proto.command.types.Help;
 import proto.command.types.ListTasks;
 import proto.command.types.LoadTasks;
 import proto.command.types.MarkTask;
@@ -130,6 +131,7 @@ public class Parser {
         case "find" -> new FindTasks(body);
         case "clear" -> new ClearTasks();
         case "load" -> new LoadTasks(body);
+        case "help" -> new Help();
         default -> new Unknown(name);
         };
     }

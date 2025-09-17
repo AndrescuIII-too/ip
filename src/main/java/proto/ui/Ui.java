@@ -26,6 +26,7 @@ public class Ui {
     public DialogBox showTaskDone(Task task) {
         return DialogBox.getProtoDialog(
                 "[I have marked this task from your list as done.]\n" +
+                "\n" +
                 " " + task.getDisplayString()
         );
     }
@@ -33,6 +34,7 @@ public class Ui {
     public DialogBox showTaskUndone(Task task) {
         return DialogBox.getProtoDialog(
                 "[I have unmarked this task from your list.]\n" +
+                "\n" +
                 " " + task.getDisplayString()
         );
     }
@@ -40,6 +42,7 @@ public class Ui {
     public DialogBox showTaskRemoved(Task task) {
         return DialogBox.getProtoDialog(
                 "[I have removed this task from your list.]\n" +
+                "\n" +
                 " " + task.getDisplayString()
         );
     }
@@ -95,7 +98,9 @@ public class Ui {
     public DialogBox showTaskAdded(Task task, TaskList taskList) {
         return DialogBox.getProtoDialog(
                 "[I have added this task to your list.]\n" +
+                "\n" +
                 " " + task.getDisplayString() + "\n" +
+                "\n" +
                 "[Now you have " + taskList.size() + " tasks in the list.]"
         );
     }
@@ -115,14 +120,16 @@ public class Ui {
     public DialogBox showTaskList(TaskList taskList) {
         return DialogBox.getProtoDialog(
                 "[Here are the tasks in your list.]\n" +
-                    taskList.getDisplayString(),
+                "\n" +
+                taskList.getDisplayString(),
                 DialogBox.Type.LIST
         );
     }
     public DialogBox showFindResults(List<IndexedTask> indexedTasks) {
         return DialogBox.getProtoDialog(
                 "[Here are the matching tasks in your list.]\n" +
-                    TaskList.getDisplayString(indexedTasks),
+                "\n" +
+                TaskList.getDisplayString(indexedTasks),
                 DialogBox.Type.LIST
         );
     }
@@ -131,5 +138,9 @@ public class Ui {
         return DialogBox.getProtoDialog(
                 "[I have cleared your task list.]"
         );
+    }
+
+    public DialogBox showHelp(String helpString) {
+        return DialogBox.getProtoDialog(helpString);
     }
 }
